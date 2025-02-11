@@ -9,14 +9,14 @@ from plotly.subplots import make_subplots
 url = " https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-PY0220EN-SkillsNetwork/labs/project/revenue.htm"
 response = requests.get(url)
 soup = bs.BeautifulSoup(response.content, "html.parser")
-print(soup.prettify())
+
 
 table_tesla_revenue = soup.find("table")
 print(table_tesla_revenue)
 
 # Extract the table headers
 table_headers = table_tesla_revenue.find_all("th")
-print(table_headers)
+
 table_headers_text = [header.text for header in table_headers]
 print(table_headers_text)
 
@@ -60,7 +60,7 @@ print(type(tesla_stock_price["Date"][0]))
 URL = "https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-PY0220EN-SkillsNetwork/labs/project/stock.html"
 res = requests.get(URL)
 soup = bs.BeautifulSoup(res.content, "html.parser")
-print(soup.prettify())
+
 
 # Extract the table rows
 table_gme_revenue = soup.find("table")
@@ -72,7 +72,7 @@ for row in table_rows:
     row_text = [data.text for data in row_data]
     table_data_gme.append(row_text)
 
-print(table_data_gme)
+
 # change format to year and revenue float
 formatted_table_data_gme = []
 for row in table_data_gme[1:]:
@@ -84,7 +84,7 @@ for row in table_data_gme[1:]:
 revenue_df_gme = pd.DataFrame(
     formatted_table_data_gme, columns="Year Rev(USDMillions)".split()
 )
-print(revenue_df_gme)
+
 
 # Fetch stock data from yfinance GME
 gamestop = yf.Ticker("GME")
@@ -149,46 +149,3 @@ def plot_stock_price_revenue(stock_price_df, revenue_df, stock_ticker):
 
 
 plot_stock_price_revenue(tesla_stock_price, revenue_df_tesla, "TSLA")
-
-
-def make_graph(stock_data, revenue_data, stock):
-    fig = make_subplots(
-        rows=2,
-        cols=1,
-        shared_xaxes=True,
-        subplot_titles=("Historical Share Price", "Historical Revenue"),
-        vertical_spacing=0.3,
-    )
-    latest_revenue_date = revenue_data["Year"].max()
-    latest_stock_date = stock_data["Date"].max()
-
-    stock_data_specific = stock_data[stock_data.Date <= latest_stock_date]
-    revenue_data_specific = revenue_data[revenue_data.Year <= latest_revenue_date]
-    fig.add_trace(
-        go.Scatter(
-            x=pd.to_datetime(stock_data_specific.Date, infer_datetime_format=True),
-            y=stock_data_specific.Close.astype("float"),
-            name="Share Price",
-        ),
-        row=1,
-        col=1,
-    )
-    fig.add_trace(
-        go.Scatter(
-            x=revenue_data_specific["Year"],
-            y=revenue_data_specific["Rev(USDMillions)"].astype("float"),
-            name="Revenue",
-        ),
-        row=2,
-        col=1,
-    )
-    fig.update_xaxes(title_text="Data", row=1, col=1)
-    fig.update_xaxes(title_text="Year", row=2, col=1)
-    fig.update_layout(
-        showlegend=False, height=900, title=stock, xaxis_rangeslider_visible=True
-    )
-    xaxis_rangeslider_visible = True
-    fig.show()
-
-
-make_graph(tesla_stock_price, revenue_df_tesla, "Tesla")
