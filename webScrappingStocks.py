@@ -46,6 +46,7 @@ table_data = formatted_table_data
 # Create a Pandas DataFrame
 revenue_df_tesla = pd.DataFrame(table_data, columns="Year Rev(USDMillions)".split())
 print(revenue_df_tesla.head())
+
 ## Fetch stock data from yfinance TSLA
 
 tesla = yf.Ticker("TSLA")
@@ -53,7 +54,7 @@ tesla_stock_price = tesla.history(period="max")
 tesla_stock_price.reset_index(inplace=True)
 print(tesla_stock_price.head(5))
 
-print(type(tesla_stock_price["Date"][0]))
+
 #######################################
 
 # fetch revenue from GME (Game Stop)
@@ -84,7 +85,7 @@ for row in table_data_gme[1:]:
 revenue_df_gme = pd.DataFrame(
     formatted_table_data_gme, columns="Year Rev(USDMillions)".split()
 )
-print(revenue_df_gme.head())
+print(revenue_df_gme.tail(5))
 
 # Fetch stock data from yfinance GME
 gamestop = yf.Ticker("GME")

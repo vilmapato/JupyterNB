@@ -65,3 +65,39 @@ df = pd.DataFrame(
 print(df)
 
 # Write a shipping.py Python program that asks the user for the weight of their package and then tells them which method of shipping is cheapest and how much it will cost to ship their package using Sal’s Shippers.
+# function that takes the weight (in pouds lb) of a package and determines the cost of shipping
+
+
+def calculate_shipping_cost(weight):
+    # Calculate the cost of ground shipping
+    if weight <= 2:
+        cost_ground = weight * 1.5 + 20
+    elif weight <= 6:
+        cost_ground = weight * 3 + 20
+    elif weight <= 10:
+        cost_ground = weight * 4 + 20
+    else:
+        cost_ground = weight * 4.75 + 20
+
+    # Calculate the cost of premium ground shipping
+    cost_ground_premium = 125.00
+
+    # Calculate the cost of drone shipping
+    if weight <= 2:
+        cost_drone = weight * 4.5
+    elif weight <= 6:
+        cost_drone = weight * 9
+    elif weight <= 10:
+        cost_drone = weight * 12
+    else:
+        cost_drone = weight * 14.25
+
+    return cost_ground, cost_ground_premium, cost_drone
+
+
+package_weight = float(input("Enter the weight of your package (in pounds): "))
+cost_ground, cost_ground_premium, cost_drone = calculate_shipping_cost(package_weight)
+
+print(f"Cost of Ground Shipping: ${cost_ground:.2f}")
+print(f"Cost of Ground Shipping Premium: ${cost_ground_premium:.2f}")
+print(f"Cost of Drone Shipping: ${cost_drone:.2f}")

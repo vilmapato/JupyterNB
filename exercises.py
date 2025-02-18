@@ -38,6 +38,8 @@ for coin in top_coins:
     coin_id = coin["id"]
     historical_data[coin_id] = fetch_historical_data(coin_id)
 
+print(historical_data.items())
+
 
 # Function to process historical data
 def process_historical_data(data):
@@ -62,4 +64,4 @@ for coin_id, data in historical_data.items():
 
 
 processed_data_df = pd.DataFrame(processed_data)
-print(processed_data_df.head())
+print(processed_data_df[["bitcoin", "ethereum"]])
