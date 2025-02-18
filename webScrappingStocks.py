@@ -12,13 +12,13 @@ soup = bs.BeautifulSoup(response.content, "html.parser")
 
 
 table_tesla_revenue = soup.find("table")
-print(table_tesla_revenue)
+# print(table_tesla_revenue)
 
 # Extract the table headers
 table_headers = table_tesla_revenue.find_all("th")
 
 table_headers_text = [header.text for header in table_headers]
-print(table_headers_text)
+# print(table_headers_text)
 
 # Extract the table rows
 table_rows = table_tesla_revenue.find_all("tr")
@@ -41,11 +41,11 @@ for row in table_data[1:]:
     formatted_table_data.append([year, float(revenue)])
 
 table_data = formatted_table_data
-print(table_data)
+
 
 # Create a Pandas DataFrame
 revenue_df_tesla = pd.DataFrame(table_data, columns="Year Rev(USDMillions)".split())
-
+print(revenue_df_tesla.head())
 ## Fetch stock data from yfinance TSLA
 
 tesla = yf.Ticker("TSLA")
@@ -64,7 +64,7 @@ soup = bs.BeautifulSoup(res.content, "html.parser")
 
 # Extract the table rows
 table_gme_revenue = soup.find("table")
-print(table_gme_revenue)
+# print(table_gme_revenue)
 table_rows = table_gme_revenue.find_all("tr")
 table_data_gme = []
 for row in table_rows:
@@ -84,7 +84,7 @@ for row in table_data_gme[1:]:
 revenue_df_gme = pd.DataFrame(
     formatted_table_data_gme, columns="Year Rev(USDMillions)".split()
 )
-
+print(revenue_df_gme.head())
 
 # Fetch stock data from yfinance GME
 gamestop = yf.Ticker("GME")
@@ -149,3 +149,4 @@ def plot_stock_price_revenue(stock_price_df, revenue_df, stock_ticker):
 
 
 plot_stock_price_revenue(tesla_stock_price, revenue_df_tesla, "TSLA")
+plot_stock_price_revenue(gamestop_stock_price, revenue_df_gme, "GME")
